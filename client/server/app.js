@@ -4,13 +4,23 @@ const app = express()
 const port = 3002
 const cors = require('cors')
 
+let tmptag = [];
+
 app.use(cors())
+
+app.use(
+  express.urlencoded({
+    extended:true
+  })
+)
+app.use(express.json())
 
 //tags 
 app.get('/tags', (req, res) => {
   console.log('calling /tags')
   res.setHeader('Content-Type', 'application/json');
-  res.send(JSON.stringify(data.tags))
+   let newtag =tmptag.concat(data.tags)
+  res.send(JSON.stringify(newtag))
 })
 
 
@@ -31,9 +41,14 @@ app.get('/:id', (req, res) => {
   })
   
 
-// post request
-app.post('/', function (req, res) {
-    res.send('POST request to the homepage')
+// post tags request
+app.post('/tags', function (req, res) {
+  console.log(req.body)
+    const add = [{id:tmptag.length + 1,name : req.body.tagname}]
+
+  //  tmptag =tmptag.concat(add)
+  tmptag.push(add)
+    res.send('adding tag'+req.body.tagname)
   })
 
 // update data
